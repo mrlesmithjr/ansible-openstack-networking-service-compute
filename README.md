@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [ansible-openstack-networking-service-compute](#ansible-openstack-networking-service-compute)
   - [Requirements](#requirements)
@@ -44,6 +44,10 @@ openstack_networking_service_compute_keystone_authtoken:
 # Do not append the port or api version
 openstack_networking_service_compute_keystone_service_endpoint_url: 'http://{{ inventory_hostname }}'
 
+# Management IP Info
+openstack_networking_service_compute_management_interface: 'enp0s8'
+openstack_networking_service_compute_management_ip: "{{ hostvars[inventory_hostname]['ansible_'+openstack_compute_service_compute_management_interface]['ipv4']['address'] }}"
+
 # Define memcached servers
 openstack_networking_service_compute_memcached_servers:
   - 127.0.0.1
@@ -68,7 +72,8 @@ openstack_networking_service_compute_neutron_user_pass: []
 openstack_networking_service_compute_provider_interface: 'enp0s9'
 
 # RabbitMQ connection info
-openstack_networking_service_compute_rabbit_host: 'localhost'
+openstack_networking_service_compute_rabbit_hosts:
+  - 127.0.0.1
 openstack_networking_service_compute_rabbit_pass: 'openstack'
 openstack_networking_service_compute_rabbit_user: 'openstack'
 ```
