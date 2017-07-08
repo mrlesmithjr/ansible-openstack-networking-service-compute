@@ -2,8 +2,11 @@
 
 [DEFAULT]
 auth_strategy = keystone
+bind_host = {{ openstack_networking_service_compute_management_ip }}
 core_plugin = ml2
-transport_url = rabbit://{{ openstack_networking_service_compute_rabbit_user }}:{{ openstack_networking_service_compute_rabbit_pass }}@{{ openstack_networking_service_compute_rabbit_host }}
+{% set _rabbit_user = openstack_networking_service_compute_rabbit_user %}
+{% set _rabbit_pass = openstack_networking_service_compute_rabbit_pass %}
+transport_url = rabbit://{% for host in openstack_networking_service_compute_rabbit_hosts %}{{ _rabbit_user }}:{{ _rabbit_pass }}@{{ host }}{% if not loop.last %},{% endif %}{% endfor %}
 
 [agent]
 root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
